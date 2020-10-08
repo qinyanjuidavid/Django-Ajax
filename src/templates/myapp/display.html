@@ -1,0 +1,47 @@
+{%extends 'myapp/base.html'%}
+{%block content%}
+
+  <div class="col-sm-6">
+    <button type="button" class="btn btn-outline-success mt-2 col-sm-2">Get</button>
+{%for task in task%}
+<ul id="seconds">
+  {{task.title}}
+</ul>
+{%endfor%}
+</div>
+<div class="col-sm-6">
+<ul id="right">
+</ul>
+</div>
+{%endblock%}
+{%block script%}
+<script type="text/javascript">
+// $(document).ready(function(){
+// $.ajax({
+// url:"{%url 'myapp:ajax_display'%}",
+// type:'GET',
+// data:'seconds',
+// success:function(response){
+//   $("#seconds").prepend('<ul>'+response.seconds+'</ul>')
+// }
+// });
+// });
+
+
+$(document).ready(function(){
+  $(".btn").click(function(){
+    $.ajax({
+      url:"{%url 'myapp:ajax_display'%}",
+      type:'get',
+      data:{
+        button_text:$(this).text()
+      },
+      success:function(response){
+         // $(".btn").text(response.seconds)
+        $("#seconds").prepend('<ul>'+response.seconds+'</ul>')
+      },
+    });
+  });
+});
+</script>
+{%endblock%}

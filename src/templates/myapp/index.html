@@ -1,0 +1,46 @@
+{%extends 'myapp/base.html'%}
+{%block content%}
+<legend style=color:maroon;>Live Data</legend>
+<hr>
+<table class="table table-striped table-bordered">
+  <thead class="text-white" style=background-color:dodgerblue;>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Phone Number</th>
+      <th scope="col">Email</th>
+      <tr>
+  </thead>
+  <tbody id="display">
+    <tr>
+      <th scope="row"></th>
+      <td></td>
+      <td></td>
+      <td></td>
+</tr>
+  </tbody>
+</table>
+
+{%endblock%}
+{%block script%}
+<script type="text/javascript">
+$(document).ready(function(){
+  setInterval(function(){
+    $.ajax({
+      type:'GET',
+      url:"{%url 'myapp:getUsers'%}",
+      success:function(response){
+        $('#display').empty();
+        for (var key in  response.users)(
+          $("#display").prepend('<tr><th scope="row">'+response.users[key].userid+'</th><td>'+response.users[key].name+'</td><td>'+response.users[key].phone_number+'</td><td>'+response.users[key].email+'</td></tr>')
+
+        )
+      },
+      error:function(response){
+        alert("No Data Found");
+      }
+    });
+  },1000);
+});
+</script>
+{%endblock%}

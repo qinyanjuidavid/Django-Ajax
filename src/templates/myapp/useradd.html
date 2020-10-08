@@ -1,0 +1,34 @@
+{%extends 'myapp/base.html'%}
+{%load crispy_forms_tags%}
+{%block content%}
+    <legend style=color:maroon;>Add User</legend>
+<form method="POST" id="UserAddForm" action="" enctype="multipart/form-data">
+  {%csrf_token%}
+  {{form|crispy}}
+  <button type="submit" class="btn btn-outline-success">Add User</button>
+</form>
+{%endblock%}
+
+{%block script%}
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#UserAddForm").submit(function(e){
+    e.preventDefault();
+    var serializedData=$(this).serialize();
+    $.ajax({
+      type:'POST',
+      url:"{%url 'myapp:ajax_user'%}",
+      data:serializedData,
+      success:function(response){
+        $("#UserAddForm")[0].reset();
+      },
+      error:function(response){
+        console.log(response);
+        alert("User was not added!");
+      }
+    });
+  });
+});
+
+</script>
+{%endblock%}

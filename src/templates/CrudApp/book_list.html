@@ -1,0 +1,77 @@
+{%extends 'CrudApp/main.html'%}
+{%block content%}
+<legend style=color:maroon;>Book List</legend>
+<p>
+<button type="button" class="btn btn-primary js-create-book" data-toggle="modal" data-target="#modal-book">
+  <i class="fa fa-plus"></i> New Book
+</button>
+</p>
+<table class="table table-striped" id="book-table">
+<thead style=background-color:dodgerblue;color:white;>
+  <tr>
+<th>#</th>
+<th>Title</th>
+<th>Author</th>
+<th>type</th>
+<th>Publication data</th>
+<th>Pages</th>
+<th>Price</th>
+  </tr>
+</thead>
+<tbody>
+  {%for book in books%}
+  <tr>
+    <td>{{book.id}}</td>
+    <td>{{book.title}}</td>
+    <td>{{book.author}}</td>
+    <td>{{book.get_book_type_display}}</td>
+    <td>{{book.publication_date}}</td>
+    <td>{{book.pages}}</td>
+    <td>{{book.price}}</td>
+  </tr>
+  {%empty%}
+  <tr>
+    <td colspan="7" class="text-center bg-warning">NO BOOK!</td>
+  </tr>
+  {%endfor%}
+</tbody>
+</table>
+
+<div class="modal fade" id="modal-book" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+      Footer
+      </div>
+    </div>
+  </div>
+</div>
+{%endblock%}
+{%block script%}
+<script type="text/javascript">
+$(function(){
+  $(".js-create-book").click(function(){
+    $.ajax({
+      url:"{%url 'CrudApp:book_create'%}",
+      type:'GET',
+      dataType:'json',
+      beforeSend:function(){
+        // $("#modal-book").modal("show");
+      },
+      success:function(data){
+      $("modal-book .modal-content").html(data.html_form);
+      }
+    });
+  });
+});
+</script>
+{%endblock%}
